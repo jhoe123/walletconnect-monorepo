@@ -1,6 +1,6 @@
 {
   "name": "@elabox/iso-crypto",
-  "version": "1.7.8",
+  "version": "1.7.9",
   "description": "Isomorphic Crypto for WalletConnect using CryptoJs",
   "scripts": {
     "clean": "rm -rf dist",
@@ -24,7 +24,7 @@
     "dapp"
   ],
   "author": "WalletConnect, Inc. <walletconnect.com>",
-  "homepage": "https://github.com/WalletConnect/walletconnect-monorepo/",
+  "homepage": "https://github.com/jhoe123/walletconnect-monorepo/",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "browser": "dist/esm/index.js",
@@ -35,10 +35,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/walletconnect/walletconnect-monorepo.git"
+    "url": "git+https://github.com/jhoe123/walletconnect-monorepo.git"
   },
   "bugs": {
-    "url": "https://github.com/walletconnect/walletconnect-monorepo/issues"
+    "url": "https://github.com/jhoe123/walletconnect-monorepo/issues"
   },
   "devDependencies": {
     "@babel/cli": "7.8.3",

@@ -1,5 +1,5 @@
 {
-  "name": "@elaboxwallet/client",
+  "name": "@elabox/client",
   "version": "1.7.8",
   "description": "Client for WalletConnect specifically for elabox",
   "scripts": {
@@ -24,7 +24,7 @@
     "dapp"
   ],
   "author": "WalletConnect, Inc. <walletconnect.com>",
-  "homepage": "https://github.com/WalletConnect/walletconnect-monorepo/",
+  "homepage": "https://github.com/jhoe123/walletconnect-monorepo/",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "browser": "dist/esm/index.js",
@@ -35,10 +35,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/walletconnect/walletconnect-monorepo.git"
+    "url": "git+https://github.com/jhoe123/walletconnect-monorepo.git"
   },
   "bugs": {
-    "url": "https://github.com/walletconnect/walletconnect-monorepo/issues"
+    "url": "https://github.com/jhoe123/walletconnect-monorepo/issues"
   },
   "devDependencies": {
     "@babel/cli": "7.8.3",
@@ -61,7 +61,7 @@
   },
   "dependencies": {
     "@walletconnect/core": "^1.7.8",
-    "@elaboxwallet/iso-crypto": "^1.7.8",
+    "@elabox/iso-crypto": "^1.7.9",
     "@walletconnect/types": "^1.7.8",
     "@walletconnect/utils": "^1.7.8"
   },
