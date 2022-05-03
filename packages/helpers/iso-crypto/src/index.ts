@@ -1,29 +1,35 @@
-import * as crypto from "@walletconnect/crypto";
 import * as encoding from "@walletconnect/encoding";
+import cryptojs from "crypto-js";
 import {
   IJsonRpcRequest,
   IJsonRpcResponseSuccess,
   IJsonRpcResponseError,
   IEncryptionPayload,
 } from "@walletconnect/types";
-import { convertArrayBufferToBuffer, convertBufferToArrayBuffer } from "@walletconnect/utils";
+import { convertArrayBufferToBuffer, convertBufferToArrayBuffer, convertBufferToHex, convertUtf8ToArrayBuffer } from "@walletconnect/utils";
 
 export async function generateKey(length?: number): Promise<ArrayBuffer> {
   const _length = (length || 256) / 8;
-  const bytes = crypto.randomBytes(_length);
-  const result = convertBufferToArrayBuffer(encoding.arrayToBuffer(bytes));
-
+  const bytes = cryptojs.lib.WordArray.random(_length).toString();
+  const result = convertUtf8ToArrayBuffer(bytes)
   return result;
 }
 
 export async function verifyHmac(payload: IEncryptionPayload, key: Uint8Array): Promise<boolean> {
-  const cipherText = encoding.hexToArray(payload.data);
-  const iv = encoding.hexToArray(payload.iv);
+  // const cipherText = encoding.hexToArray(payload.data);
+  // const iv = encoding.hexToArray(payload.iv);
   const hmac = encoding.hexToArray(payload.hmac);
   const hmacHex: string = encoding.arrayToHex(hmac, false);
-  const unsigned = encoding.concatArrays(cipherText, iv);
-  const chmac = await crypto.hmacSha256Sign(key, unsigned);
-  const chmacHex: string = encoding.arrayToHex(chmac, false);
+  // const unsigned = encoding.concatArrays(cipherText, iv);
+  
+  // const chmac = await crypto.hmacSha256Sign(key, unsigned);
+  // const chmacHex: string = encoding.arrayToHex(chmac, false);
+
+  const keyHex = cryptojs.enc.Hex.parse(encoding.arrayToHex(key))
+  const dataHex = cryptojs.enc.Hex.parse(payload.data)
+  const ivHex = cryptojs.enc.Hex.parse(payload.iv)
+  const chmacHex = cryptojs.HmacSHA256(dataHex.concat(ivHex), keyHex).toString(cryptojs.enc.Hex)
+
 
   if (encoding.removeHexPrefix(hmacHex) === encoding.removeHexPrefix(chmacHex)) {
     return true;
@@ -37,26 +43,25 @@ export async function encrypt(
   key: ArrayBuffer,
   providedIv?: ArrayBuffer,
 ): Promise<IEncryptionPayload> {
-  const _key = encoding.bufferToArray(convertArrayBufferToBuffer(key));
-
+  await generateKey(128)
   const ivArrayBuffer: ArrayBuffer = providedIv || (await generateKey(128));
-  const iv = encoding.bufferToArray(convertArrayBufferToBuffer(ivArrayBuffer));
-  const ivHex: string = encoding.arrayToHex(iv, false);
-
+  const iv = encoding.bufferToHex(convertArrayBufferToBuffer(ivArrayBuffer));
   const contentString: string = JSON.stringify(data);
-  const content = encoding.utf8ToArray(contentString);
 
-  const cipherText = await crypto.aesCbcEncrypt(iv, _key, content);
-  const cipherTextHex: string = encoding.arrayToHex(cipherText, false);
+  const ivUtf8 = cryptojs.enc.Hex.parse( iv)
+  const keyArry = encoding.bufferToHex(convertArrayBufferToBuffer(key));
+  const key_Word = cryptojs.enc.Hex.parse(keyArry)
+  const cipherText = cryptojs.AES.encrypt(contentString, key_Word, {iv: ivUtf8})
+  const cipherTextHex = cryptojs.enc.Hex.stringify(cipherText.ciphertext)
+  //console.log(key_Word.toString(), ivUtf8.toString(), cipherText.toString(cryptojs.format.OpenSSL),  encoding.utf8ToHex(contentString))
 
-  const unsigned = encoding.concatArrays(cipherText, iv);
-  const hmac = await crypto.hmacSha256Sign(_key, unsigned);
-  const hmacHex: string = encoding.arrayToHex(hmac, false);
+  const hmac = cryptojs.HmacSHA256(cipherText.ciphertext.concat(ivUtf8), key_Word)
+  const hmacHex = cryptojs.enc.Hex.stringify(hmac)
 
   return {
     data: cipherTextHex,
     hmac: hmacHex,
-    iv: ivHex,
+    iv: iv,
   };
 }
 
@@ -74,14 +79,16 @@ export async function decrypt(
   if (!verified) {
     return null;
   }
+  const keyRaw = encoding.bufferToHex( convertArrayBufferToBuffer(key))
+  const keyHex = cryptojs.enc.Hex.parse(keyRaw)
+  const iv = cryptojs.enc.Hex.parse(payload.iv)
+  const decrypted = cryptojs.AES.decrypt(payload.data, keyHex, {iv: iv, format: cryptojs.format.Hex})
+  //console.log("DECRYPTING", keyHex.toString(), iv.toString(), payload.data, )
+  //console.log("Result",   decrypted.toString(), decrypted)
 
-  const cipherText = encoding.hexToArray(payload.data);
-  const iv = encoding.hexToArray(payload.iv);
-  const buffer = await crypto.aesCbcDecrypt(iv, _key, cipherText);
-  const utf8: string = encoding.arrayToUtf8(buffer);
   let data: IJsonRpcRequest;
   try {
-    data = JSON.parse(utf8);
+    data = JSON.parse(decrypted.toString(cryptojs.enc.Utf8));
   } catch (error) {
     return null;
   }
