@@ -1,5 +1,5 @@
 {
-  "name": "@walletconnect/iso-crypto",
+  "name": "@elabox/iso-crypto",
   "version": "1.7.8",
   "description": "Isomorphic Crypto for WalletConnect using CryptoJs",
   "scripts": {
@@ -66,5 +66,7 @@
     "@walletconnect/utils": "^1.7.8",
     "crypto-js": "^4.1.1"
   },
-  "gitHead": "165f7993c2acc907c653c02847fb02721052c6e7"
+  "directories": {
+    "test": "test"
+  }
 }
