@@ -44,7 +44,7 @@ export function uuid(): string {
 export function logDeprecationWarning() {
   // eslint-disable-next-line no-console
   console.warn(
-    "DEPRECATION WARNING: This WalletConnect client library will be deprecated in favor of @walletconnect/client. Please check docs.walletconnect.org to learn more about this migration!",
+    "DEPRECATION WARNING: This WalletConnect client library will be deprecated in favor of @elabox/client. Please check docs.walletconnect.org to learn more about this migration!",
   );
 }
 

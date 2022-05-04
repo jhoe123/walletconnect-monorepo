@@ -1,5 +1,5 @@
 import { ethers, utils } from "ethers";
-import WalletConnect from "@walletconnect/client";
+import WalletConnect from "@elabox/client";
 import { IConnector } from "@walletconnect/types";
 
 export interface WalletClientOpts {
