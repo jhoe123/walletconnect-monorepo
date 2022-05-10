@@ -60,7 +60,7 @@
     "webpack-cli": "3.3.10"
   },
   "dependencies": {
-    "@walletconnect/client": "^1.7.0",
+    "@elabox/client": "^1.7.0",
     "@walletconnect/qrcode-modal": "^1.7.0",
     "@walletconnect/types": "^1.7.0",
     "web3-provider-engine": "16.0.1"

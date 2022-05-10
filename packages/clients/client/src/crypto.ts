@@ -1,5 +1,6 @@
 import * as encoding from "@walletconnect/encoding";
 import cryptojs from "crypto-js";
+import * as crypto from "@walletconnect/crypto";
 import {
   IJsonRpcRequest,
   IJsonRpcResponseSuccess,
@@ -10,8 +11,9 @@ import { convertArrayBufferToBuffer, convertBufferToArrayBuffer, convertBufferTo
 
 export async function generateKey(length?: number): Promise<ArrayBuffer> {
   const _length = (length || 256) / 8;
-  const bytes = cryptojs.lib.WordArray.random(_length).toString();
-  const result = convertUtf8ToArrayBuffer(bytes)
+  const bytes = crypto.randomBytes(_length);
+  const result = convertBufferToArrayBuffer(encoding.arrayToBuffer(bytes));
+
   return result;
 }
 
@@ -53,7 +55,7 @@ export async function encrypt(
   const key_Word = cryptojs.enc.Hex.parse(keyArry)
   const cipherText = cryptojs.AES.encrypt(contentString, key_Word, {iv: ivUtf8})
   const cipherTextHex = cryptojs.enc.Hex.stringify(cipherText.ciphertext)
-  //console.log(key_Word.toString(), ivUtf8.toString(), cipherText.toString(cryptojs.format.OpenSSL),  encoding.utf8ToHex(contentString))
+  console.log(key_Word.toString(), ivUtf8.toString(), cipherText.toString(cryptojs.format.OpenSSL),  encoding.utf8ToHex(contentString))
 
   const hmac = cryptojs.HmacSHA256(cipherText.ciphertext.concat(ivUtf8), key_Word)
   const hmacHex = cryptojs.enc.Hex.stringify(hmac)
@@ -83,8 +85,8 @@ export async function decrypt(
   const keyHex = cryptojs.enc.Hex.parse(keyRaw)
   const iv = cryptojs.enc.Hex.parse(payload.iv)
   const decrypted = cryptojs.AES.decrypt(payload.data, keyHex, {iv: iv, format: cryptojs.format.Hex})
-  //console.log("DECRYPTING", keyHex.toString(), iv.toString(), payload.data, )
-  //console.log("Result",   decrypted.toString(), decrypted)
+  console.log("DECRYPTING", keyHex.toString(), iv.toString(), payload.data, )
+  console.log("Result",   decrypted.toString(), decrypted)
 
   let data: IJsonRpcRequest;
   try {

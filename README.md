@@ -11,7 +11,7 @@ Open protocol for connecting Wallets to Dapps - https://walletconnect.org
 | Clients               | Current Version                                                                                                              | Description       |
 | --------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ----------------- |
 | @walletconnect/core   | [![npm version](https://badge.fury.io/js/%40walletconnect%2Fcore.svg)](https://badge.fury.io/js/%40walletconnect%2Fcore)     | Core Client       |
-| @walletconnect/client | [![npm version](https://badge.fury.io/js/%40walletconnect%2Fclient.svg)](https://badge.fury.io/js/%40walletconnect%2Fclient) | Isomorphic Client |
+| @elabox/client | [![npm version](https://badge.fury.io/js/%40walletconnect%2Fclient.svg)](https://badge.fury.io/js/%40walletconnect%2Fclient) | Isomorphic Client |
 
 | Providers                        | Current Version                                                                                                                                    | Description       |
 | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |

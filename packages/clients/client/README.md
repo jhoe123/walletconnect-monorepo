@@ -7,16 +7,16 @@ For more details, read the [documentation](https://docs.walletconnect.org)
 ## Install
 
 ```bash
-yarn add @walletconnect/client
+yarn add @elabox/client
 # OR
 
-npm install --save @walletconnect/client
+npm install --save @elabox/client
 ```
 
 ## Initiate Connection
 
 ```javascript
-import WalletConnect from "@walletconnect/client";
+import WalletConnect from "@elabox/client";
 
 // Create a connector
 const connector = new WalletConnect({
