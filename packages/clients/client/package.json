@@ -1,6 +1,6 @@
 {
   "name": "@elabox/client",
-  "version": "1.7.5",
+  "version": "1.7.9",
   "description": "Client for WalletConnect specifically for elabox",
   "scripts": {
     "clean": "rm -rf dist",
